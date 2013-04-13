@@ -4,27 +4,25 @@
         var animationEnd = "animationend webkitAnimationEnd MSAnimationEnd oAnimationEnd";
         var transitionEnd = "webkitTransitionEnd transitionend msTransitionEnd oTransitionEnd";
         var fetch = null;
+        var showResponse;
         
-        $("input").keyup(function(event) {
-            if (event.keyCode === 13) {            	
-            	var rss = $(this).val();
-                fetch = $.ajax({
-                	url: 'http://ajax.googleapis.com/ajax/services/feed/load',
-                	data: {v: '1.0', q: rss, num: 100},
-                	dataType: 'jsonp',
-                });
-                document.getElementById("falcon_fly").play();
-                return $(this).parent().addClass("zoomed");
+        getUrlFromHash = function() {
+            var match;
+            match = window.location.hash.match(/#(.+)$/);
+            if (match) {
+                var url = match[1];
+                if (url.indexOf('http') != 0) {
+                    return 'http://' + url
+                } else {
+                    return url;
+               }
             }
-        });
-        $(".input").on(transitionEnd, function() {
-        	return showResponse();
-        });
+        };
         
         showResponse = function() {
             $(".plane").show();
             return fetch.done(function(data) {
-        		playCommit(data.responseData.feed.entries);
+                playCommit(data.responseData.feed.entries);
             }).fail(function(problem) {
                 console.log(problem);
                 return playError();
@@ -63,6 +61,31 @@
             }
         };
         
+        if (rss = getUrlFromHash()) {
+            fetch = $.ajax({
+                url: 'http://ajax.googleapis.com/ajax/services/feed/load',
+                data: {v: '1.0', q: rss, num: 100},
+                dataType: 'jsonp',
+            });
+            return showResponse();
+        } else {
+            $("input").keyup(function(event) {
+                if (event.keyCode === 13) {
+                    var rss = $(this).val();
+                    window.history.pushState(null, null, '#' + rss);
+                    fetch = $.ajax({
+                        url: 'http://ajax.googleapis.com/ajax/services/feed/load',
+                        data: {v: '1.0', q: rss, num: 100},
+                        dataType: 'jsonp',
+                    });
+                    document.getElementById("falcon_fly").play();
+                    return $(this).parent().addClass("zoomed");
+                }
+            });
+            $(".input").on(transitionEnd, function() {
+                return showResponse();
+            });
+        }
         $(document).on(animationEnd, ".content", function() {
             return $(this).remove();
         });
