@@ -1,34 +1,22 @@
-One day in a galaxy far, far away… someone might want to read your project history.
+Preview: http://fotcorn.github.io/StarRSS/
 
-Get a preview today: http://starlogs.net
+This project is based on StarLogs by artemave: https://github.com/artemave/StarLogs
 
-### Want to hack on it?
+The RSS feed is loaded with the Google Feed API: https://developers.google.com/feed/
 
-No problem. But first, it is not just Javascript and CSS. It is [pogoscript](http://pogoscript.org/) and [sass](http://sass-lang.com/). Oh, and they require node.js and ruby respectively.
 
-If that does not put you off, I give up! Clone the project:
-
-    $ git clone git://github.com/artemave/StarLogs.git && cd StarLogs
-
-Get pogo:
-
-    $ npm install -g pogo
-
-Leave it autocompile:
-
-    $ pogo -cw javascripts/*.pogo
+###Howto Hack: 
 
 Get sass:
-
     $ gem install sass # with sudo unless on rvm, rbenv, etc.
 
 Leave it autocompile:
-
     $ sass --watch stylesheets:stylesheets
 
-Serve project folder:
+Host it on a local server, e.g.:
+    $ python -m SimpleHTTPServer
 
+Or if you are more a Node.JS guy:
     $ npm install -g serve
     $ serve
-
-Navigate to http://localhost:3000/starlogs.html and take it from there!
+    
