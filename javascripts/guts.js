@@ -51,7 +51,7 @@
                 $(".plane").append($("<a>", {
                     "class": "content",
                     "href": messages[0].link,
-                }).text(messages[0].title));
+                }).html(messages[0].title));
                 setTimeout(function() {
                     return crawl(messages.slice(counter));
                 }, delay());
