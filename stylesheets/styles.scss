@@ -74,6 +74,8 @@ body {
   top: 95%;
   color: rgb(252,223,43);
   opacity: 0;
+  display: block;
+  text-decoration: none;
   @include animation(crawling 25s linear);
 }
 

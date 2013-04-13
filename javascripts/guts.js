@@ -10,7 +10,7 @@
             	var rss = $(this).val();
                 fetch = $.ajax({
                 	url: 'http://ajax.googleapis.com/ajax/services/feed/load',
-                	data: {v: '1.0', q: rss, num: 30},
+                	data: {v: '1.0', q: rss, num: 100},
                 	dataType: 'jsonp',
                 });
                 document.getElementById("falcon_fly").play();
@@ -24,13 +24,7 @@
         showResponse = function() {
             $(".plane").show();
             return fetch.done(function(data) {
-                var entries = data.responseData.feed.entries;
-        		var messages = [];
-        		for (i = 0; i < entries.length; i++) {
-        			messages.push(entries[i].title)
-        		}
-        		$(".plane").show();
-        		playCommit(messages);
+        		playCommit(data.responseData.feed.entries);
             }).fail(function(problem) {
                 console.log(problem);
                 return playError();
@@ -56,9 +50,10 @@
                 return 1e3 + 500 * lastMessageDivHeight / 18;
             };
             if (messages.length > 0) {
-                $(".plane").append($("<div>", {
-                    "class": "content"
-                }).text(messages[0]));
+                $(".plane").append($("<a>", {
+                    "class": "content",
+                    "href": messages[0].link,
+                }).text(messages[0].title));
                 setTimeout(function() {
                     return crawl(messages.slice(counter));
                 }, delay());
